@@ -35,10 +35,7 @@ pub fn run(doc_json_path: &Path, include_std: bool) -> Result<AnalyzeOutput> {
         for (crate_id, ids) in item_visitor.crate_id_to_public_item {
             if let Some(span) = &item.span {
                 for id in &ids {
-                    id_to_usages
-                        .entry(id.clone())
-                        .or_default()
-                        .insert(span.clone());
+                    id_to_usages.entry(*id).or_default().insert(span.clone());
                 }
             }
 
@@ -62,7 +59,7 @@ struct ItemVisitor<'a> {
     include_std: bool,
 }
 
-impl<'a> Visitor for ItemVisitor<'a> {
+impl Visitor for ItemVisitor<'_> {
     fn visit_path(&mut self, path: &rustdoc_types::Path) {
         self.on_id(&path.id);
     }
@@ -73,7 +70,7 @@ impl<'a> Visitor for ItemVisitor<'a> {
     }
 }
 
-impl<'a> ItemVisitor<'a> {
+impl ItemVisitor<'_> {
     fn on_id(&mut self, id: &Id) {
         let Some(item) = self.krate.paths.get(id) else {
             return;
@@ -91,6 +88,6 @@ impl<'a> ItemVisitor<'a> {
         self.crate_id_to_public_item
             .entry(item.crate_id)
             .or_default()
-            .insert(id.clone());
+            .insert(*id);
     }
 }

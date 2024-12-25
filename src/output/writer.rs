@@ -88,7 +88,7 @@ where
     iter: WithPosition<I>,
 }
 
-impl<'a, 'b, I> LendingIterator for Iter<'a, 'b, I>
+impl<I> LendingIterator for Iter<'_, '_, I>
 where
     I: Iterator,
 {
