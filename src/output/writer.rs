@@ -92,19 +92,17 @@ impl<'a, 'b, I> LendingIterator for Iter<'a, 'b, I>
 where
     I: Iterator,
 {
-    type Item<'this> = (Writer<'this>, I::Item)
+    type Item<'this>
+        = (Writer<'this>, I::Item)
     where
         Self: 'this;
 
     fn next(&mut self) -> Option<Self::Item<'_>> {
-        let (item, last) = match self.iter.next()? {
-            Position::First(inner) | Position::Middle(inner) => (inner, false),
-            Position::Last(inner) | Position::Only(inner) => (inner, true),
-        };
+        let (pos, item) = self.iter.next()?;
         let writer = Writer {
             indent: self.writer.indent,
             level: self.writer.level + 1,
-            last,
+            last: pos == Position::Last,
             super_last: self.writer.last,
             out: &mut self.writer.out,
         };

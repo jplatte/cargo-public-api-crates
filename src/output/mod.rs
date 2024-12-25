@@ -24,19 +24,10 @@ pub fn run(analyze_output: AnalyzeOutput) -> Result<()> {
 
     let mut stdout = std::io::stdout().lock();
 
-    for item in crate_id_to_public_item.into_iter().with_position() {
-        let (crate_id, ids, last) = match item {
-            Position::First((crate_id, ids)) | Position::Middle((crate_id, ids)) => {
-                (crate_id, ids, false)
-            }
-            Position::Last((crate_id, ids)) | Position::Only((crate_id, ids)) => {
-                (crate_id, ids, true)
-            }
-        };
-
+    for (pos, (crate_id, ids)) in crate_id_to_public_item.into_iter().with_position() {
         output_crate(crate_id, ids, &krate, &id_to_usages, &mut stdout)?;
 
-        if !last {
+        if pos != Position::Last {
             writeln!(&mut stdout)?;
         }
     }

@@ -5,7 +5,7 @@ use std::{
 
 use crate::visit::{self, Visitor};
 use anyhow::Result;
-use rustdoc_types::{Crate, Id, Import, Span};
+use rustdoc_types::{Crate, Id, Span, Use};
 
 pub struct AnalyzeOutput {
     pub krate: Crate,
@@ -67,16 +67,20 @@ impl<'a> Visitor for ItemVisitor<'a> {
         self.on_id(&path.id);
     }
 
-    fn visit_import(&mut self, import: &Import) {
-        let Some(id) = &import.id else { return };
+    fn visit_use(&mut self, use_: &Use) {
+        let Some(id) = &use_.id else { return };
         self.on_id(id);
     }
 }
 
 impl<'a> ItemVisitor<'a> {
     fn on_id(&mut self, id: &Id) {
-        let Some(item) = self.krate.paths.get(id) else { return };
-        let Some(krate) = self.krate.external_crates.get(&item.crate_id) else { return };
+        let Some(item) = self.krate.paths.get(id) else {
+            return;
+        };
+        let Some(krate) = self.krate.external_crates.get(&item.crate_id) else {
+            return;
+        };
 
         if !self.include_std
             && (krate.name == "std" || krate.name == "alloc" || krate.name == "core")
