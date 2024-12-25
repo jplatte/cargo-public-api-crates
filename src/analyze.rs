@@ -3,9 +3,10 @@ use std::{
     path::Path,
 };
 
-use crate::visit::{self, Visitor};
 use anyhow::Result;
 use rustdoc_types::{Crate, Id, Span, Use};
+
+use crate::visit::{self, Visitor};
 
 pub struct AnalyzeOutput {
     pub krate: Crate,

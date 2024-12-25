@@ -1,8 +1,9 @@
 use std::{collections::BTreeSet, io::Write, path::PathBuf};
 
-use crate::{analyze::AnalyzeOutput, find_and_parse_cargo_toml};
 use anyhow::{Context, Result};
 use serde::Deserialize;
+
+use crate::{analyze::AnalyzeOutput, find_and_parse_cargo_toml};
 
 pub fn run(manifest_path: Option<PathBuf>, analyze_output: AnalyzeOutput) -> Result<()> {
     let AnalyzeOutput {

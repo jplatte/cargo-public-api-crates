@@ -1,7 +1,8 @@
+use std::{path::PathBuf, process::Command};
+
 use anyhow::{ensure, Context, Result};
 use glob::glob;
 use serde::Deserialize;
-use std::{path::PathBuf, process::Command};
 
 use crate::find_and_parse_cargo_toml;
 

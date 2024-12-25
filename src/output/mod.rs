@@ -3,12 +3,12 @@ use std::{
     io::Write,
 };
 
-use crate::analyze::AnalyzeOutput;
 use anyhow::{Context, Result};
 use itertools::{Itertools, Position};
 use rustdoc_types::{Crate, Id, Span};
 
 use self::writer::{LendingIterator, Writer};
+use crate::analyze::AnalyzeOutput;
 
 mod writer;
 
