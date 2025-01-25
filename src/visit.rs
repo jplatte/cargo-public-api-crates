@@ -280,7 +280,7 @@ fn visit_term(term: &Term, v: &mut impl Visitor) {
 fn visit_path(path: &Path, v: &mut impl Visitor) {
     v.visit_path(path);
     let Path {
-        name: _,
+        path: _,
         id: _,
         args,
     } = path;
