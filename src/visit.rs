@@ -307,6 +307,7 @@ fn visit_generic_args(args: &GenericArgs, v: &mut impl Visitor) {
                 visit_type(type_, v);
             }
         }
+        GenericArgs::ReturnTypeNotation => {}
     }
 }
 
@@ -316,7 +317,9 @@ fn visit_assoc_item_constraint(binding: &AssocItemConstraint, v: &mut impl Visit
         args,
         binding,
     } = binding;
-    visit_generic_args(args, v);
+    if let Some(args) = args {
+        visit_generic_args(args, v);
+    }
     visit_assoc_item_constraint_kind(binding, v);
 }
 
@@ -375,7 +378,9 @@ fn visit_type(type_: &Type, v: &mut impl Visitor) {
             self_type,
             trait_,
         } => {
-            visit_generic_args(args, v);
+            if let Some(args) = args {
+                visit_generic_args(args, v);
+            }
             visit_type(self_type, v);
             if let Some(trait_) = trait_ {
                 visit_path(trait_, v);
