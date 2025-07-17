@@ -48,7 +48,7 @@ impl<'a> Writer<'a> {
 
     pub(super) fn write_line(&mut self, fmt: fmt::Arguments<'_>) -> Result<()> {
         for n in 0..self.current_indent() {
-            if !self.super_last && n % self.indent == 0 {
+            if !self.super_last && n.is_multiple_of(self.indent) {
                 write!(self.out, "{}", SYMBOLS.down)?;
             } else {
                 write!(self.out, " ")?;
